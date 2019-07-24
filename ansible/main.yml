@@ -8,8 +8,14 @@
     - geerlingguy.packer-debian
 
   tasks:
-    - apt: "name={{ item }} state=installed"
-      with_items:
+    - name: Install Tools
+      apt:
+        name: "{{ packages }}"
+        state: present
+      vars:
+        packages:
+        - lvm2
+        - mc
         - git
         - wget
         - curl
