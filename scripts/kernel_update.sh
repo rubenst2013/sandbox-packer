@@ -8,7 +8,7 @@ add-apt-repository -y ppa:teejee2008/ppa
 apt-get update
 apt-get upgrade -qq -y
 
-apt-get install -y ukuu
+apt-get install -y ukuu gcc make perl
 
 ukuu --check
 
