@@ -11,9 +11,9 @@ apt update
 # Delete unneeded files.
 rm -f /home/vagrant/*.sh
 
-# Zero out the rest of the free space using dd, then delete the written file.
-dd if=/dev/zero of=/EMPTY bs=1M
-rm -f /EMPTY
+# Use fstrim to shrink the disks data files.
+fstrim --all --verbose || true
+
 
 # Add `sync` so Packer doesn't quit too early, before the large file is deleted.
 sync

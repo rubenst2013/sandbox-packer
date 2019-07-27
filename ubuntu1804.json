@@ -42,6 +42,13 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/cleanup.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline_shebang": "#!/bin/bash -e",
+      "inline":["echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'"] ,
+      "pause_before": "30s"
     }
   ],
   "builders": [
