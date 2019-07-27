@@ -53,7 +53,10 @@
         "<enter><wait>"
       ],
       "boot_wait": "10s",
-      "disk_size": 81920,
+      "disk_size": 30720,
+      "hard_drive_interface": "scsi",
+      "hard_drive_nonrotational": true,
+      "hard_drive_discard": true,
       "guest_os_type": "Ubuntu_64",
       "headless": true,
       "http_directory": "http",
@@ -73,31 +76,101 @@
       "vm_name": "packer-ubuntu-18.04-amd64",
       "vboxmanage": [
         [
-          "modifyvm",
-          "{{.Name}}",
-          "--memory",
-          "1024"
+          "modifyvm", "{{.Name}}",
+          "--memory", "24576"
         ],
         [
-          "modifyvm",
-          "{{.Name}}",
-          "--cpus",
-          "1"
-        ]
+          "modifyvm", "{{.Name}}",
+          "--cpus", "4"
+        ],
+        [
+          "modifyvm", "{{.Name}}", 
+          "--vram", "128"
+        ],
+        [
+          "createmedium", "disk",
+          "--filename", "swap_00.vdi",
+          "--size", "8192",
+          "--format", "vdi",
+          "--variant", "Standard"
+        ],
+        [
+          "createmedium", "disk",
+          "--filename", "var_00.vdi",
+          "--size", "204800",
+          "--format", "vdi",
+          "--variant", "Standard"
+        ],
+        [
+          "createmedium", "disk",
+          "--filename", "tmp_00.vdi",
+          "--size", "102400",
+          "--format", "vdi",
+          "--variant", "Standard"
+        ],
+        [
+          "createmedium", "disk",
+          "--filename", "home_00.vdi",
+          "--size", "51200",
+          "--format", "vdi",
+          "--variant", "Standard"
+        ],
+        [
+          "storagectl", "{{.Name}}", 
+          "--name", "SCSI Controller",
+          "--hostiocache", "on"
+        ],
+        [
+          "storageattach", "{{.Name}}",
+          "--storagectl", "SCSI Controller",
+          "--port", "1",
+          "--device", "0",
+          "--type", "hdd",
+          "--medium", "swap_00.vdi",
+          "--mtype", "normal",
+          "--nonrotational", "on",
+          "--discard", "on"
+        ],
+        [
+          "storageattach", "{{.Name}}",
+          "--storagectl", "SCSI Controller",
+          "--port", "2",
+          "--device", "0",
+          "--type", "hdd",
+          "--medium", "var_00.vdi",
+          "--mtype", "normal",
+          "--nonrotational", "on",
+          "--discard", "on"
+        ],
+        [
+          "storageattach", "{{.Name}}",
+          "--storagectl", "SCSI Controller",
+          "--port", "3",
+          "--device", "0",
+          "--type", "hdd",
+          "--medium", "tmp_00.vdi",
+          "--mtype", "normal",
+          "--nonrotational", "on",
+          "--discard", "on"
+        ],
+        [
+          "storageattach", "{{.Name}}",
+          "--storagectl", "SCSI Controller",
+          "--port", "4",
+          "--device", "0",
+          "--type", "hdd",
+          "--medium", "home_00.vdi",
+          "--mtype", "normal",
+          "--nonrotational", "on",
+          "--discard", "on"
+        ] 
       ]
     }
   ],
   "post-processors": [
-    [
-      {
-        "output": "builds/{{.Provider}}-ubuntu1804.box",
-        "type": "vagrant"
-      },
-      {
-        "type": "vagrant-cloud",
-        "box_tag": "geerlingguy/ubuntu1804",
-        "version": "{{user `version`}}"
-      }
-    ]
-  ]
+    {
+      "output": "builds/{{.Provider}}-ubuntu1804-{{user `version`}}.box",
+      "type": "vagrant"
+    }
+   ]
 }
