@@ -1,7 +1,11 @@
 #!groovy
 
 pipeline {
-    agent { node 'hefti.be.gk-software.com' }
+    agent { 
+		node {
+			label 'VirtualBox-6.0'
+		} 
+	}
     tools { }
 
     stages {
