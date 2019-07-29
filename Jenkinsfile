@@ -3,7 +3,7 @@
 pipeline {
     agent { 
 		node {
-			label 'VirtualBox-6.0'
+			label 'virtualbox-6.0'
 		} 
 	}
 
