@@ -1,4 +1,4 @@
-# Packer Example - Ubuntu 18.04 minimal Vagrant Box
+# Packer Example - Ubuntu 18.04 minimal Vagrant Box [![Build Status](https://hudson-test.es.gk-software.com/hudson/buildStatus/icon?job=psale-sandbox%2Fsandbox-packer)](https://hudson-test.es.gk-software.com/hudson/job/psale-sandbox/job/sandbox-packer/)
 
 **Current Ubuntu Version Used**: 18.04.2
 
