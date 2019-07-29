@@ -6,7 +6,6 @@ pipeline {
 			label 'VirtualBox-6.0'
 		} 
 	}
-    tools { }
 
     stages {
      	stage('Validate') {
@@ -21,10 +20,5 @@ pipeline {
 			}
 		  }
     }
-    
-    post {
-		success {
-		//	archiveArtifacts artifacts: 'target/*.jar, target/*.tgz', fingerprint: true
-		}
-    }
+
 }
