@@ -47,7 +47,10 @@
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "inline_shebang": "#!/bin/bash -e",
-      "inline":["echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'"] ,
+      "inline":[
+        "echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'",
+        "echo -n > /etc/machine-id"
+        ] ,
       "pause_before": "30s"
     }
   ],
