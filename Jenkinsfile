@@ -36,7 +36,7 @@ pipeline {
 					box_file_name="virtualbox-ubuntu1804-${BUILD_NUMBER}.box"
 					box_file_size_in_bytes="$(ls -nl ${box_file_location}/${box_file_name} | awk '{print $5}')"
 
-					echo "Uploading file ${box_file_name} to ${nexus_repo_base_url}/${nexus_repo}/${nexus_repo_sub_dir}/${box_file_name}
+					echo "Uploading file ${box_file_name} to ${nexus_repo_base_url}/${nexus_repo}/${nexus_repo_sub_dir}/${box_file_name}"
 
 					curl --request PUT \
 						--user "${NEXUS_USERNAME}:${NEXUS_PASSWORD}"
