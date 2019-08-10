@@ -2,58 +2,6 @@
   "variables": {
     "version": ""
   },
-  "provisioners": [
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/ansible.sh"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/setup.sh"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/kernel_update.sh"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "expect_disconnect": true,
-      "inline_shebang": "#!/bin/bash -e",
-      "inline":["echo 'Rebooting system now!'", "systemctl reboot"] ,
-      "timeout": "15m"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "inline_shebang": "#!/bin/bash -e",
-      "inline":["echo 'Rebooting complete. Continuing with provisioning...'"] ,
-      "pause_before": "2m"
-    },
-    {
-      "type": "ansible-local",
-      "playbook_file": "ansible/main.yml",
-      "galaxy_file": "requirements.yml"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/cleanup.sh"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "inline_shebang": "#!/bin/bash -e",
-      "inline":[
-        "echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'",
-        "echo -n > /etc/machine-id"
-        ] ,
-      "pause_before": "30s"
-    }
-  ],
   "builders": [
     {
       "type": "virtualbox-iso",
@@ -198,6 +146,58 @@
           "--discard", "on"
         ] 
       ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/ansible.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/setup.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/kernel_update.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "expect_disconnect": true,
+      "inline_shebang": "#!/bin/bash -e",
+      "inline":["echo 'Rebooting system now!'", "systemctl reboot"] ,
+      "timeout": "15m"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline_shebang": "#!/bin/bash -e",
+      "inline":["echo 'Rebooting complete. Continuing with provisioning...'"] ,
+      "pause_before": "2m"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/main.yml",
+      "galaxy_file": "requirements.yml"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/cleanup.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "inline_shebang": "#!/bin/bash -e",
+      "inline":[
+        "echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'",
+        "echo -n > /etc/machine-id"
+        ] ,
+      "pause_before": "30s"
     }
   ],
   "post-processors": [
