@@ -31,7 +31,6 @@ pipeline {
 					nexus_repo_base_url="https://${nexus_host}/nexus/repository"
 					nexus_repo="vagrant"
 					nexus_repo_sub_dir="boxes/custom/rsteinbacher/ubuntu1804"
-					basic_auth="Basic dmFncmFudDp0cTZuRTQ1U0NlS1hJ"
 					box_file_location="./builds"
 					box_file_name="virtualbox-ubuntu1804-${BUILD_NUMBER}.box"
 					box_file_size_in_bytes="$(ls -nl ${box_file_location}/${box_file_name} | awk '{print $5}')"
@@ -46,7 +45,6 @@ pipeline {
 						--max-time 2000 \
 						--header "Accept: */*" \
 						--header "Accept-Encoding: gzip, deflate" \
-						--header "Authorization: ${basic_auth}" \
 						--header "Cache-Control: no-cache" \
 						--header "Connection: keep-alive" \
 						--header "Content-Length: ${box_file_size_in_bytes}" \
