@@ -7,6 +7,10 @@ pipeline {
 		} 
 	}
 
+	environment {
+        PACKER_CACHE_DIR = '/usr/local/share/packer/cache/'
+    }
+
     stages {
      	stage('Validate') {
     		steps {
