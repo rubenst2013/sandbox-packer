@@ -4,3 +4,4 @@ iso/*
 .vagrant/*
 builds/*
 .vs/*
+.idea/*
