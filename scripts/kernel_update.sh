@@ -12,4 +12,4 @@ apt-get install -y ukuu gcc make perl
 
 ukuu --check
 
-ukuu --install v5.2.17
+ukuu --install v5.2.20
