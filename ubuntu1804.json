@@ -167,6 +167,11 @@
     {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/microk8s.sh"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "expect_disconnect": true,
       "inline_shebang": "#!/bin/bash -e",
       "inline":["echo 'Rebooting system now!'", "systemctl reboot"] ,
