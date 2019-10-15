@@ -167,11 +167,6 @@
     {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/microk8s.sh"
-    },
-    {
-      "type": "shell",
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "expect_disconnect": true,
       "inline_shebang": "#!/bin/bash -e",
       "inline":["echo 'Rebooting system now!'", "systemctl reboot"] ,
@@ -183,6 +178,11 @@
       "inline_shebang": "#!/bin/bash -e",
       "inline":["echo 'Rebooting complete. Continuing with provisioning...'"] ,
       "pause_before": "2m"
+    },
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "script": "scripts/microk8s.sh"
     },
     {
       "type": "ansible-local",
