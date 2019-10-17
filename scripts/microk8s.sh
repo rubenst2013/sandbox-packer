@@ -2,6 +2,11 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Prep snapd explicitly
+apt-get update
+apt-get upgrade -qq -y
+apt-get install -y snapd
+
 # Install microk8s
 # https://microk8s.io/
 # Zero-ops single node Kubernetes cluster for workstations and appliances
