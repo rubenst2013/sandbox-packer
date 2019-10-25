@@ -36,6 +36,7 @@ usermod -a -G microk8s vagrant
 # Install helm
 # https://helm.sh/
 # Helm helps you manage Kubernetes applications  Helm Charts help you define, install, and upgrade even the most complex Kubernetes application.
+pushd /tmp
 curl -sSLo /tmp/helm3.tar.gz https://get.helm.sh/helm-v3.0.0-beta.5-linux-amd64.tar.gz
 tar -xzvf /tmp/helm3.tar.gz
 mv /tmp/linux-amd64/helm /usr/local/bin/helm
@@ -43,6 +44,7 @@ chmod +x /usr/local/bin/helm
 
 rm /tmp/helm3.tar.gz
 rm -rf /tmp/linux-amd64/
+popd
 
 # Install stern
 # https://github.com/wercker/stern
