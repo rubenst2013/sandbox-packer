@@ -26,7 +26,11 @@ microk8s.config >     		/home/vagrant/.kube/config
 chmod 664             		/home/vagrant/.kube/config
 chown -R vagrant:vagrant	/home/vagrant/.kube/
 
-microk8s.config > /root/.kube/config
+mkdir -p					/root/.kube/
+chmod 750					/root/.kube/
+microk8s.config >     		/root/.kube/config             
+chmod 664             		/root/.kube/config
+chown -R vagrant:vagrant	/root/.kube/
 
 snap alias microk8s.kubectl kubectl
 
