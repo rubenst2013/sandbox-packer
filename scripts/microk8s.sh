@@ -45,6 +45,7 @@ curl -sSLo /tmp/helm3.tar.gz https://get.helm.sh/helm-v3.0.0-linux-amd64.tar.gz
 tar -xzvf /tmp/helm3.tar.gz
 mv /tmp/linux-amd64/helm /usr/local/bin/helm
 chmod +x /usr/local/bin/helm
+ln -s /usr/local/bin/helm /usr/local/bin/helm3
 
 rm /tmp/helm3.tar.gz
 rm -rf /tmp/linux-amd64/
