@@ -12,6 +12,9 @@ apt-get install -y snapd
 # Zero-ops single node Kubernetes cluster for workstations and appliances
 snap install microk8s --classic --channel=1.15/stable
 
+# Set auto refresh to a more convenient time frame, https://snapcraft.io/docs/keeping-snaps-up-to-date
+snap set system refresh.timer=fri5,23:00-01:00
+
 microk8s.start
 microk8s.status --wait-ready
 microk8s.enable dns 
