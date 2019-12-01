@@ -166,6 +166,11 @@
       "script": "scripts/setup.sh"
     },
     {
+        "type": "file",
+        "source": "files/ubuntu-mainline-kernel.sh",
+        "destination": "/tmp/ubuntu-mainline-kernel.sh"
+    },
+    {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/kernel_update.sh"
