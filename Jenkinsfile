@@ -15,12 +15,12 @@ pipeline {
      	stage('Validate') {
     		steps {
 				sh 'pwd && ls -lah'
-				sh 'packer validate ubuntu1804.json'
+				sh 'packer validate ubuntu-server.json'
 			}
 		}
 		stage('Build') {
     		steps {
-				sh 'packer build -var "version=${BUILD_NUMBER}" ubuntu1804.json'
+				sh 'packer build -var "version=${BUILD_NUMBER}" ubuntu-server.json'
 			}
 		}
 		stage('Upload') {
@@ -32,9 +32,9 @@ pipeline {
 						nexus_host="nexus3-test.es.gk-software.com"
 						nexus_repo_base_url="https://${nexus_host}/nexus/repository"
 						nexus_repo="vagrant"
-						nexus_repo_sub_dir="boxes/custom/rsteinbacher/ubuntu1804"
+						nexus_repo_sub_dir="boxes/custom/rsteinbacher/ubuntu-server"
 						box_file_location="./builds"
-						box_file_name="virtualbox-ubuntu1804-${BUILD_NUMBER}.box"
+						box_file_name="virtualbox-ubuntu-server-${BUILD_NUMBER}.box"
 						box_file_size_in_bytes=$(ls -nl "${box_file_location}/${box_file_name}" | awk '{print $5}')
 
 						echo "Uploading file ${box_file_name} to ${nexus_repo_base_url}/${nexus_repo}/${nexus_repo_sub_dir}/${box_file_name}"
