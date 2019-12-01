@@ -5,7 +5,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Prep snapd explicitly
 apt-get update
 apt-get upgrade -qq -y
-apt-get install -y snapd
+apt-get install -y snapd curl
 
 # Install microk8s
 # https://microk8s.io/
