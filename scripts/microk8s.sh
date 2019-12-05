@@ -26,7 +26,7 @@ microk8s.start
 microk8s.status --wait-ready
 microk8s.enable dns 
 microk8s.status --wait-ready
-microk8s.enable storage dashboard ingress
+microk8s.enable storage dashboard
 microk8s.status --wait-ready
 
 # .kube/config is needed for tools like stern to operate on the cluster
