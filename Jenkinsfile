@@ -24,6 +24,14 @@ pipeline {
 			}
 		}
 		stage('Upload') {
+      when {
+		    allOf {
+		      tag comparator: "REGEXP", pattern: "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?\$"
+		    }
+		    beforeOptions true
+        beforeInput true
+        beforeAgent true
+		  }
 			steps {
 				withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: '4f42c8d2-3c58-4093-b7da-bdc8df4e5fcc',
 				usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD']]) {
