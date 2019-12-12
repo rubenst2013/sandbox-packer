@@ -20,7 +20,7 @@ pipeline {
 		}
 		stage('Build') {
     		steps {
-				sh 'packer build -var "version=${BUILD_NUMBER}" ubuntu-server.json'
+				sh 'packer build -var "version=${TAG_NAME:-${BUILD_NUMBER}}" ubuntu-server.json'
 			}
 		}
 		stage('Upload') {
