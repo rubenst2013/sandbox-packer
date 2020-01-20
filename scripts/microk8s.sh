@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -eux
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -13,14 +13,14 @@ snap set system refresh.timer=fri5,23:00-01:00
 # Install microk8s
 # https://microk8s.io/
 # Zero-ops single node Kubernetes cluster for workstations and appliances
-snap install microk8s --classic --channel=1.15/stable
+snap install microk8s --classic --channel=1.16/stable
 
-#echo "Re-enabeling deprecated K8S APIs..."
-#microk8s.stop
-#echo '' >> /var/snap/microk8s/current/args/kube-apiserver
-#echo '# Re-enable deprecated APIs' >> /var/snap/microk8s/current/args/kube-apiserver
-#echo '--runtime-config=apps/v1beta1=true,apps/v1beta2=true,extensions/v1beta1/daemonsets=true,extensions/v1beta1/deployments=true,extensions/v1beta1/replicasets=true,extensions/v1beta1/networkpolicies=true,extensions/v1beta1/podsecuritypolicies=true' >> /var/snap/microk8s/current/args/kube-apiserver
-#echo '#~Re-enable deprecated APIs' >> /var/snap/microk8s/current/args/kube-apiserver
+echo "Re-enabeling deprecated K8S APIs..."
+microk8s.stop
+echo '' >> /var/snap/microk8s/current/args/kube-apiserver
+echo '# Re-enable deprecated APIs' >> /var/snap/microk8s/current/args/kube-apiserver
+echo '--runtime-config=apps/v1beta1=true,apps/v1beta2=true,extensions/v1beta1/daemonsets=true,extensions/v1beta1/deployments=true,extensions/v1beta1/replicasets=true,extensions/v1beta1/networkpolicies=true,extensions/v1beta1/podsecuritypolicies=true' >> /var/snap/microk8s/current/args/kube-apiserver
+echo '#~Re-enable deprecated APIs' >> /var/snap/microk8s/current/args/kube-apiserver
 
 microk8s.start
 microk8s.status --wait-ready
