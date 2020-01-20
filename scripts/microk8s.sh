@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 
 export DEBIAN_FRONTEND=noninteractive
 
