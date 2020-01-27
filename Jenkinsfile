@@ -52,7 +52,7 @@ pipeline {
 							--upload-file "${box_file_location}/${box_file_name}" \
 							--url "${nexus_repo_base_url}/${nexus_repo}/${nexus_repo_sub_dir}/${box_file_name}" \
 							--connect-timeout 5 \
-							--max-time 2000 \
+							--max-time 6000 \
 							--header "Accept: */*" \
 							--header "Accept-Encoding: gzip, deflate" \
 							--header "Cache-Control: no-cache" \
