@@ -15,8 +15,6 @@
       vars:
         packages:
         - lvm2
-        - xorg
-        - libasound2
         - mc
         - git
         - wget
