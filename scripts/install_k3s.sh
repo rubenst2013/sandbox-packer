@@ -2,6 +2,11 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
+# Install prerequisite tools for k3s
+apt-get update
+apt-get upgrade -qq -y
+apt-get install -y curl
+
 # Install k3s
 # https://k3s.io
 # Zero-ops single node Kubernetes cluster for workstations and appliances
