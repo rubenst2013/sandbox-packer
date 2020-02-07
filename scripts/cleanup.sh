@@ -21,4 +21,4 @@ fstrim --all --verbose || true
 sync
 
 # Disable e2fsscrub entries in cron, causes high cpu load with kubernetes
-sed -i 's/^([^#])/# \1/' /etc/cron.d/e2scrub_all
+sed -i 's/^\([^#]\)/# \1/' /etc/cron.d/e2scrub_all
