@@ -15,8 +15,8 @@ wait $!
 
 sleep 120 # Give k3s installer some extra time to finish
 
-mkdir /home/.kube/
-mkdir /root/.kube/
+mkdir -p /home/vagrant/.kube/
+mkdir -p /root/.kube/
 cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
 cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 
