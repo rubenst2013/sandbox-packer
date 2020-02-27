@@ -10,6 +10,7 @@ apt-get install -y curl
 # Install k3s
 # Tell k3s installation script to re-enable deprecated APIs as some GK helm charts still depend on those
 export INSTALL_K3S_EXEC="--no-deploy=traefik --kube-apiserver-arg runtime-config=apps/v1beta1=true,apps/v1beta2=true,extensions/v1beta1/daemonsets=true,extensions/v1beta1/deployments=true,extensions/v1beta1/replicasets=true,extensions/v1beta1/networkpolicies=true,extensions/v1beta1/podsecuritypolicies=true"
+export INSTALL_K3S_VERSION="v1.17.3+k3s1"
 
 # Execute k3s installation script, obtained from https://get.k3s.io (https://raw.githubusercontent.com/rancher/k3s/master/install.sh)
 bash /tmp/install_k3s.sh &
