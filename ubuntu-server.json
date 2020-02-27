@@ -193,6 +193,11 @@
       "pause_before": "2m"
     },
     {
+        "type": "file",
+        "source": "files/install_k3s.sh",
+        "destination": "/tmp/install_k3s.sh"
+    },
+    {
       "type": "shell",
       "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
       "script": "scripts/install_k3s.sh"
