@@ -2,11 +2,9 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Install Ansible repository.
+# Install Ansible dependencies.
 apt -y update && apt-get -y upgrade
-apt -y install software-properties-common
-apt-add-repository ppa:ansible/ansible
+apt -y install python-pip python-dev
 
 # Install Ansible.
-apt -y update
-apt -y install ansible
+pip install ansible

@@ -2,9 +2,9 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-# Uninstall Ansible and remove PPA.
-apt -y remove --purge ansible
-apt-add-repository --remove ppa:ansible/ansible
+# Uninstall Ansible and dependencies.
+pip uninstall ansible
+apt-get remove python-pip python-dev
 
 # Apt cleanup.
 apt autoremove
