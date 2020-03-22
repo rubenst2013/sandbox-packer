@@ -39,9 +39,13 @@
         - multitail
       when: ansible_os_family == 'Debian'
 
-    - name: Disable e2fsscrub entries in cron
-      cron:
-        cron_file: e2scrub_all
+  #  - name: Disable e2fsscrub entries in cron
+  #    cron:
+  #      cron_file: e2scrub_all
+  #      user: root
+  #      state: present
+  #      disabled: yes
+  #    when: ansible_os_family == 'Debian'
         state: present
         disabled: yes
       when: ansible_os_family == 'Debian'
