@@ -164,36 +164,6 @@
       "type": "shell"
     },
     {
-      "destination": "/tmp/ubuntu-mainline-kernel.sh",
-      "source": "files/ubuntu-mainline-kernel.sh",
-      "type": "file"
-    },
-    {
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "script": "scripts/kernel_update.sh",
-      "type": "shell"
-    },
-    {
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "expect_disconnect": true,
-      "inline": [
-        "echo 'Rebooting system now!'",
-        "systemctl reboot"
-      ],
-      "inline_shebang": "#!/bin/bash -e",
-      "timeout": "15m",
-      "type": "shell"
-    },
-    {
-      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
-      "inline": [
-        "echo 'Rebooting complete. Continuing with provisioning...'"
-      ],
-      "inline_shebang": "#!/bin/bash -e",
-      "pause_before": "2m",
-      "type": "shell"
-    },
-    {
       "galaxy_file": "requirements.yml",
       "playbook_file": "ansible/main.yml",
       "type": "ansible-local"
