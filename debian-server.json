@@ -22,7 +22,7 @@
       "boot_wait": "10s",
       "disk_size": 30720,
       "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_os_type": "Ubuntu_64",
+      "guest_os_type": "Debian_64",
       "hard_drive_discard": true,
       "hard_drive_interface": "scsi",
       "hard_drive_nonrotational": true,
@@ -135,12 +135,12 @@
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "ubuntu-server-amd64_{{user `build_number`}}_{{user `branch_name`}}"
+      "vm_name": "debian-server-amd64-{{user `build_number`}}-{{user `branch_name`}}"
     }
   ],
   "post-processors": [
     {
-      "output": "builds/{{.Provider}}-ubuntu-server-{{user `version`}}.box",
+      "output": "builds/{{.Provider}}-debian-server-{{user `version`}}.box",
       "type": "vagrant"
     }
   ],
