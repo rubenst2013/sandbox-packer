@@ -201,8 +201,8 @@
       "type": "shell"
     },
     {
-      "galaxy_file": "requirements.yml",
-      "playbook_file": "ansible/main.yml",
+      "galaxy_file": "../shared/requirements.yml",
+      "playbook_file": "../shared/main.yml",
       "type": "ansible-local"
     },
     {
