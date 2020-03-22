@@ -36,4 +36,5 @@
         - curl
         - vim
         - htop
+        - multitail
       when: ansible_os_family == 'Debian'
