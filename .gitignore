@@ -5,4 +5,4 @@ iso/*
 builds/*
 .vs/*
 .idea/*
-debian10/packer_cache/
+**/packer_cache/
