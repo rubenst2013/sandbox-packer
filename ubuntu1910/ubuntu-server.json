@@ -142,7 +142,7 @@
         ]
       ],
       "virtualbox_version_file": ".vbox_version",
-      "vm_name": "ubuntu-server-amd64_{{user `build_number`}}_{{user `branch_name`}}"
+      "vm_name": "ubuntu-server-amd64-{{user `build_number`}}-{{user `branch_name`}}"
     }
   ],
   "post-processors": [
