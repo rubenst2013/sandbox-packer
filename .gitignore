@@ -5,3 +5,5 @@ iso/*
 builds/*
 .vs/*
 .idea/*
+**/packer_cache/
+**/.vagrant/
