@@ -21,9 +21,3 @@
         - curl
         - vim
         - htop
-    
-    - name: Add crontab entry to periodically remove Vagrant NAT default GW
-      cron:
-        name: "Remove Vagrant NAT default GW"
-        user: "root"
-        job: "ip r delete default dev enp0s3 >/dev/null 2>&1"
