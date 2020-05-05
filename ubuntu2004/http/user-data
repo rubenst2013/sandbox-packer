@@ -1,0 +1,94 @@
+#cloud-config
+autoinstall:
+  version: 1
+  apt:
+    geoip: true
+    preserve_sources_list: true
+#    primary:
+#    - arches: [amd64, i386]
+#      uri: http://de.archive.ubuntu.com/ubuntu
+#    - arches: [default]
+#      uri: http://ports.ubuntu.com/ubuntu-ports
+  packages:
+    - ubuntu-standard
+    - ubuntu-server
+    - cryptsetup
+    - build-essential
+    - libssl-dev
+    - libreadline-dev
+    - zlib1g-dev
+    - linux-source
+    - dkms
+    - nfs-common
+    - software-properties-common
+  identity: {hostname: vagrant, password: $6$H6dENrige2G2YwQQ$ip2nRmBQDm5OXtQ.xpxOoq.f32XOuNkHm6KgMiPH7LFcYhbWnEiVS8bGD3UGRDRstnL4nn/0Av8rtaXfPjGMz1,
+    realname: vagrant, username: vagrant}
+  keyboard: {layout: de, variant: ''}
+  locale: en_US
+  network:
+    network:
+      ethernets:
+        enp0s3: {dhcp4: true, dhcp-identifier: mac}
+      version: 2
+  ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: true
+  storage:
+    config:
+    - {ptable: gpt, path: /dev/sda, wipe: superblock, preserve: false, name: '', grub_device: true,
+      type: disk, id: disk-sda}
+    - {path: /dev/sdb, wipe: superblock, preserve: false, name: '', grub_device: false,
+      type: disk, id: disk-sdb}
+    - {path: /dev/sdc, wipe: superblock, preserve: false, name: '', grub_device: false,
+      type: disk, id: disk-sdc}
+    - {path: /dev/sdd, wipe: superblock, preserve: false, name: '', grub_device: false,
+      type: disk, id: disk-sdd}
+    - {path: /dev/sde, wipe: superblock, preserve: false, name: '', grub_device: false,
+      type: disk, id: disk-sde}
+    - name: vg_swap
+      devices: [disk-sdb]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: vg_var
+      devices: [disk-sdc]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-2
+    - name: vg_home
+      devices: [disk-sde]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-3
+    - name: vg_tmp
+      devices: [disk-sdd]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-4
+    - {name: lv_tmp, volgroup: lvm_volgroup-4, size: 107369988096B, preserve: false, type: lvm_partition, id: lvm_partition-3}
+    - {fstype: ext4, volume: lvm_partition-3, preserve: false, type: format, id: format-6}
+    - {name: lv_home, volgroup: lvm_volgroup-3, size: 53682896896B, preserve: false, type: lvm_partition, id: lvm_partition-4}
+    - {fstype: ext4, volume: lvm_partition-4, preserve: false, type: format, id: format-7}
+    - {name: lv_var, volgroup: lvm_volgroup-2, size: 214744170496B, preserve: false, type: lvm_partition, id: lvm_partition-5}
+    - {fstype: ext4, volume: lvm_partition-5, preserve: false, type: format, id: format-8}
+    - {name: lv_swap, volgroup: lvm_volgroup-0, size: 8585740288B, preserve: false,  type: lvm_partition, id: lvm_partition-6}
+    - {fstype: swap, volume: lvm_partition-6, preserve: false, type: format, id: format-9}
+    - {device: format-9, path: '', type: mount, id: mount-9}
+    - {device: disk-sda, size: 1048576, flag: bios_grub, number: 1, preserve: false, type: partition, id: partition-4}
+    - {device: disk-sda, size: 1073741824, wipe: superblock, flag: '', number: 2, preserve: false, type: partition, id: partition-5}
+    - {fstype: ext4, volume: partition-5, preserve: false, type: format, id: format-10}
+    - {device: disk-sda, size: 31135367168, wipe: superblock, flag: '', number: 3, preserve: false, type: partition, id: partition-6}
+    - {fstype: ext4, volume: partition-6, preserve: false, type: format, id: format-11}
+    - {device: format-11, path: /, type: mount, id: mount-11}
+    - {device: format-6, path: /tmp, type: mount, id: mount-6}
+    - {device: format-7, path: /home, type: mount, id: mount-7}
+    - {device: format-8, path: /var, type: mount, id: mount-8}
+    - {device: format-10, path: /boot, type: mount, id: mount-10}
+#    swap: {swap: 0}
+  late-commands:
+    - 'sed -i "s/^#*\(send dhcp-client-identifier\).*$/\1 = hardware;/" /target/etc/dhcp/dhclient.conf'
+    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
+    - 'swapoff /target/swap.img || true'
+    - 'sed -i "/swap\.img/d" /target/etc/fstab'
+    - 'rm /target/swap.img'
