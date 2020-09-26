@@ -27,8 +27,8 @@
       "skip_export": false,
       "ssh_password": "vagrant",
       "ssh_port": 22,
-      "ssh_timeout": "25m",
-      "ssh_handshake_attempts": "30",
+        "ssh_timeout": "60m",
+        "ssh_handshake_attempts": "3000",
       "ssh_username": "vagrant",
       "type": "virtualbox-iso",
       "vboxmanage": [
