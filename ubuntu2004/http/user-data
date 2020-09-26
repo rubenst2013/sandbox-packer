@@ -36,55 +36,45 @@ autoinstall:
     install-server: true
   storage:
     config:
-    - {ptable: gpt, path: /dev/sda, wipe: superblock, preserve: false, name: '', grub_device: true,
-      type: disk, id: disk-sda}
-    - {path: /dev/sdb, wipe: superblock, preserve: false, name: '', grub_device: false,
-      type: disk, id: disk-sdb}
-    - {path: /dev/sdc, wipe: superblock, preserve: false, name: '', grub_device: false,
-      type: disk, id: disk-sdc}
-    - {path: /dev/sdd, wipe: superblock, preserve: false, name: '', grub_device: false,
-      type: disk, id: disk-sdd}
-    - {path: /dev/sde, wipe: superblock, preserve: false, name: '', grub_device: false,
-      type: disk, id: disk-sde}
-    - name: vg_swap
-      devices: [disk-sdb]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-0
-    - name: vg_var
-      devices: [disk-sdc]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-2
-    - name: vg_home
-      devices: [disk-sde]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-3
-    - name: vg_tmp
-      devices: [disk-sdd]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-4
-    - {name: lv_tmp, volgroup: lvm_volgroup-4, size: 107369988096B, preserve: false, type: lvm_partition, id: lvm_partition-3}
-    - {fstype: ext4, volume: lvm_partition-3, preserve: false, type: format, id: format-6}
-    - {name: lv_home, volgroup: lvm_volgroup-3, size: 53682896896B, preserve: false, type: lvm_partition, id: lvm_partition-4}
-    - {fstype: ext4, volume: lvm_partition-4, preserve: false, type: format, id: format-7}
-    - {name: lv_var, volgroup: lvm_volgroup-2, size: 214744170496B, preserve: false, type: lvm_partition, id: lvm_partition-5}
-    - {fstype: ext4, volume: lvm_partition-5, preserve: false, type: format, id: format-8}
-    - {name: lv_swap, volgroup: lvm_volgroup-0, size: 8585740288B, preserve: false,  type: lvm_partition, id: lvm_partition-6}
-    - {fstype: swap, volume: lvm_partition-6, preserve: false, type: format, id: format-9}
-    - {device: format-9, path: '', type: mount, id: mount-9}
-    - {device: disk-sda, size: 1048576, flag: bios_grub, number: 1, preserve: false, type: partition, id: partition-4}
-    - {device: disk-sda, size: 1073741824, wipe: superblock, flag: '', number: 2, preserve: false, type: partition, id: partition-5}
-    - {fstype: ext4, volume: partition-5, preserve: false, type: format, id: format-10}
-    - {device: disk-sda, size: 31135367168, wipe: superblock, flag: '', number: 3, preserve: false, type: partition, id: partition-6}
-    - {fstype: ext4, volume: partition-6, preserve: false, type: format, id: format-11}
-    - {device: format-11, path: /, type: mount, id: mount-11}
-    - {device: format-6, path: /tmp, type: mount, id: mount-6}
-    - {device: format-7, path: /home, type: mount, id: mount-7}
-    - {device: format-8, path: /var, type: mount, id: mount-8}
-    - {device: format-10, path: /boot, type: mount, id: mount-10}
+    - {type: disk, ptable: gpt, path: /dev/sda, wipe: superblock, preserve: false, name: '', grub_device: true,  id: disk-sda}
+    - {type: disk, ptable: gpt, path: /dev/sdb, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdb}
+    - {type: disk, ptable: gpt, path: /dev/sdc, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdc}
+    - {type: disk, ptable: gpt, path: /dev/sdd, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdd}
+    - {type: disk, ptable: gpt, path: /dev/sde, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sde}
+    
+    - {type: partition, device: disk-sda, number: 1, size:     1048576,                     flag: bios_grub,    preserve: false, id: part-sda-1}
+    - {type: partition, device: disk-sda, number: 2, size:  1073741824, wipe: superblock,   flag: '',           preserve: false, id: part-sda-2}
+    - {type: partition, device: disk-sda, number: 3, size: 31135367168, wipe: superblock,   flag: '',           preserve: false, id: part-sda-3}
+    
+    - {type: partition, device: disk-sdb, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdb-1}
+    - {type: partition, device: disk-sdc, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdc-1}
+    - {type: partition, device: disk-sdd, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdd-1}
+    - {type: partition, device: disk-sde, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sde-1}
+
+    - {type: lvm_volgroup, name: vg_swap,   devices: [part-sdb-1], preserve: false, id: vg_swap}
+    - {type: lvm_volgroup, name: vg_var,    devices: [part-sdc-1], preserve: false, id: vg_var}
+    - {type: lvm_volgroup, name: vg_tmp,    devices: [part-sdd-1], preserve: false, id: vg_tmp}
+    - {type: lvm_volgroup, name: vg_home,   devices: [part-sde-1], preserve: false, id: vg_home}
+
+    - {type: lvm_partition, volgroup: vg_swap,  name: lv_swap,  size:   100%, preserve: false, id: lv_swap}
+    - {type: lvm_partition, volgroup: vg_var,   name: lv_var,   size:   100%, preserve: false, id: lv_var}
+    - {type: lvm_partition, volgroup: vg_tmp,   name: lv_tmp,   size:   100%, preserve: false, id: lv_tmp}
+    - {type: lvm_partition, volgroup: vg_home,  name: lv_home,  size:   100%, preserve: false, id: lv_home}
+    
+    - {type: format, volume: part-sda-2,    fstype: ext4, preserve: false, id: format-boot}
+    - {type: format, volume: part-sda-3,    fstype: ext4, preserve: false, id: format-root}
+
+    - {type: format, volume: lv_tmp,    fstype: ext4, preserve: false, id: format-tmp}
+    - {type: format, volume: lv_home,   fstype: ext4, preserve: false, id: format-home}
+    - {type: format, volume: lv_var,    fstype: ext4, preserve: false, id: format-var}
+    - {type: format, volume: lv_swap,   fstype: swap, preserve: false, id: format-swap}
+    
+    - {type: mount, device: format-root, path: /,       id: mount-root}
+    - {type: mount, device: format-tmp,  path: /tmp,    id: mount-tmp}
+    - {type: mount, device: format-home, path: /home,   id: mount-home}
+    - {type: mount, device: format-var,  path: /var,    id: mount-var}
+    - {type: mount, device: format-boot, path: /boot,   id: mount-boot}
+    - {type: mount, device: format-swap, path: '',      id: mount-swap}
 #    swap: {swap: 0}
   late-commands:
     - 'sed -i "s/^#*\(send dhcp-client-identifier\).*$/\1 = hardware;/" /target/etc/dhcp/dhclient.conf'
