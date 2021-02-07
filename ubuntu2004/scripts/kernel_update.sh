@@ -2,7 +2,7 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-kernel_version="5.10.6"
+kernel_version="5.10.14"
 
 # Move kernel update helper to its proper location
 mv /tmp/ubuntu-mainline-kernel.sh /usr/local/bin/

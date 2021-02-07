@@ -2,7 +2,7 @@
 
 export PACKER_CACHE_DIR='/usr/local/share/packer/cache/' 
 
-version="0.5.0"
+version="0.6.0"
 build_number="b01"
 branch_name="master"
 
