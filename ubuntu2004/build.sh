@@ -2,8 +2,8 @@
 
 export PACKER_CACHE_DIR='/usr/local/share/packer/cache/' 
 
-version="0.4.0"
-build_number="b04"
+version="0.5.0"
+build_number="b01"
 branch_name="master"
 
 packer build --var "version=${version}" --var "build_number=${build_number}" --var "branch_name=${branch_name}" box-config.json
