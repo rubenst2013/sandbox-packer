@@ -90,7 +90,7 @@ source "virtualbox-iso" "ubuntu_server_21_04" {
         "--medium", "home_00.vdi", "--mtype", "normal", "--nonrotational", "on", "--discard", "on"]
     ]
   virtualbox_version_file  = ".vbox_version"
-  vm_name                  = "packer-ubuntu-2004-${var.version}-${var.build_number}-${var.branch_name}"
+  vm_name                  = "packer-ubuntu-2104-${var.version}-${var.build_number}-${var.branch_name}"
 }
 
 # a build block invokes sources and runs provisioning steps on them. The
