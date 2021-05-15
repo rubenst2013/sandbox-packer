@@ -122,12 +122,12 @@
           ]
         ],
         "virtualbox_version_file": ".vbox_version",
-        "vm_name": "packer-ubuntu-2004-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}"
+        "vm_name": "packer-ubuntu-2104-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}"
       }
     ],
     "post-processors": [
       {
-        "output": "builds/{{.Provider}}-ubuntu-2004-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}.box",
+        "output": "builds/{{.Provider}}-ubuntu-2104-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}.box",
         "type": "vagrant"
       }
     ],
