@@ -1,0 +1,210 @@
+{
+    "builders": [
+      {
+        "boot_command": [
+          "<enter><enter><f6><esc><wait> ",
+          "autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/",
+          "<wait><enter>"
+        ],
+        "boot_wait": "5s",
+        "disk_size": 30720,
+        "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+        "guest_os_type": "Ubuntu_64",
+        "hard_drive_discard": true,
+        "hard_drive_interface": "scsi",
+        "hard_drive_nonrotational": true,
+        "headless": false,
+        "http_directory": "http",
+        "iso_checksum": "sha256:e4089c47104375b59951bad6c7b3ee5d9f6d80bfac4597e43a716bb8f5c1f3b0",
+        "iso_urls": [
+          "iso/ubuntu-21.04-live-server-amd64.iso",
+          "https://releases.ubuntu.com/21.04/ubuntu-21.04-live-server-amd64.iso"
+        ],
+        "keep_registered": false,
+        "post_shutdown_delay": "2m",
+        "shutdown_command": "echo 'vagrant'|sudo -S shutdown -P now",
+        "skip_export": false,
+        "ssh_password": "vagrant",
+        "ssh_port": 22,
+        "ssh_timeout": "60m",
+        "ssh_handshake_attempts": "3000",
+        "ssh_username": "vagrant",
+        "type": "virtualbox-iso",
+        "vboxmanage": [
+          [
+            "modifyvm", "{{.Name}}",
+            "--memory", "24576"
+          ],
+          [
+            "modifyvm", "{{.Name}}",
+            "--cpus", "4"
+          ],
+          [
+            "modifyvm", "{{.Name}}",
+            "--vram", "128"
+          ],
+          [
+            "createmedium", "disk",
+            "--filename", "swap_00.vdi",
+            "--size", "8192",
+            "--format", "vdi",
+            "--variant", "Standard"
+          ],
+          [
+            "createmedium", "disk",
+            "--filename", "var_00.vdi",
+            "--size", "204800",
+            "--format", "vdi",
+            "--variant", "Standard"
+          ],
+          [
+            "createmedium", "disk",
+            "--filename", "tmp_00.vdi",
+            "--size", "102400",
+            "--format", "vdi",
+            "--variant", "Standard"
+          ],
+          [
+            "createmedium", "disk",
+            "--filename", "home_00.vdi",
+            "--size", "51200",
+            "--format", "vdi",
+            "--variant", "Standard"
+          ],
+          [
+            "storagectl", "{{.Name}}",
+            "--name", "SCSI Controller",
+            "--hostiocache", "on"
+          ],
+          [
+            "storageattach", "{{.Name}}",
+            "--storagectl", "SCSI Controller",
+            "--port", "1",
+            "--device", "0",
+            "--type", "hdd",
+            "--medium", "swap_00.vdi",
+            "--mtype", "normal",
+            "--nonrotational", "on",
+            "--discard", "on"
+          ],
+          [
+            "storageattach", "{{.Name}}",
+            "--storagectl", "SCSI Controller",
+            "--port", "2",
+            "--device", "0",
+            "--type", "hdd",
+            "--medium", "var_00.vdi",
+            "--mtype", "normal",
+            "--nonrotational", "on",
+            "--discard", "on"
+          ],
+          [
+            "storageattach", "{{.Name}}",
+            "--storagectl", "SCSI Controller",
+            "--port", "3",
+            "--device", "0",
+            "--type", "hdd",
+            "--medium", "tmp_00.vdi",
+            "--mtype", "normal",
+            "--nonrotational", "on",
+            "--discard", "on"
+          ],
+          [
+            "storageattach", "{{.Name}}",
+            "--storagectl", "SCSI Controller",
+            "--port", "4",
+            "--device", "0",
+            "--type", "hdd",
+            "--medium", "home_00.vdi",
+            "--mtype", "normal",
+            "--nonrotational", "on",
+            "--discard", "on"
+          ]
+        ],
+        "virtualbox_version_file": ".vbox_version",
+        "vm_name": "packer-ubuntu-2004-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}"
+      }
+    ],
+    "post-processors": [
+      {
+        "output": "builds/{{.Provider}}-ubuntu-2004-{{user `version`}}-{{user `build_number`}}-{{user `branch_name`}}.box",
+        "type": "vagrant"
+      }
+    ],
+    "provisioners": [
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "inline": [
+          "unset -f command_not_found_handle"
+        ],
+        "inline_shebang": "#!/bin/bash -e",
+        "type": "shell"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "script": "scripts/ansible.sh",
+        "type": "shell"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "script": "scripts/setup.sh",
+        "type": "shell"
+      },
+      {
+        "destination": "/tmp/ubuntu-mainline-kernel.sh",
+        "source": "files/ubuntu-mainline-kernel.sh",
+        "type": "file"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "script": "scripts/kernel_update.sh",
+        "type": "shell"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "expect_disconnect": true,
+        "inline": [
+          "echo 'Rebooting system now!'",
+          "systemctl reboot"
+        ],
+        "inline_shebang": "#!/bin/bash -e",
+        "timeout": "15m",
+        "type": "shell"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "inline": [
+          "echo 'Rebooting complete. Continuing with provisioning...'"
+        ],
+        "inline_shebang": "#!/bin/bash -e",
+        "pause_before": "2m",
+        "type": "shell"
+      },
+      {
+        "galaxy_file": "../shared/requirements.yml",
+        "playbook_dir": "../shared/",
+        "playbook_file": "../shared/main.yml",
+        "type": "ansible-local"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "script": "scripts/cleanup.sh",
+        "type": "shell"
+      },
+      {
+        "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+        "inline": [
+          "echo 'Gave the host a few seconds to actually shrink the data files. Continuing...'",
+          "echo -n > /etc/machine-id"
+        ],
+        "inline_shebang": "#!/bin/bash -e",
+        "pause_before": "30s",
+        "type": "shell"
+      }
+    ],
+    "variables": {
+      "branch_name": "",
+      "build_number": "",
+      "version": ""
+    }
+  }

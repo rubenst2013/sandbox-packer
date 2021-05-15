@@ -1,0 +1,84 @@
+#cloud-config
+autoinstall:
+  version: 1
+  apt:
+    geoip: true
+    preserve_sources_list: true
+#    primary:
+#    - arches: [amd64, i386]
+#      uri: http://de.archive.ubuntu.com/ubuntu
+#    - arches: [default]
+#      uri: http://ports.ubuntu.com/ubuntu-ports
+  packages:
+    - ubuntu-standard
+    - ubuntu-server
+    - cryptsetup
+    - build-essential
+    - libssl-dev
+    - libreadline-dev
+    - zlib1g-dev
+    - linux-source
+    - dkms
+    - nfs-common
+    - software-properties-common
+  identity: {hostname: vagrant, password: $6$H6dENrige2G2YwQQ$ip2nRmBQDm5OXtQ.xpxOoq.f32XOuNkHm6KgMiPH7LFcYhbWnEiVS8bGD3UGRDRstnL4nn/0Av8rtaXfPjGMz1,
+    realname: vagrant, username: vagrant}
+  keyboard: {layout: de, variant: ''}
+  locale: en_US
+  network:
+    network:
+      ethernets:
+        enp0s3: {dhcp4: true, dhcp-identifier: mac}
+      version: 2
+  ssh:
+    allow-pw: true
+    authorized-keys: []
+    install-server: true
+  storage:
+    config:
+    - {type: disk, ptable: gpt, path: /dev/sda, wipe: superblock, preserve: false, name: '', grub_device: true,  id: disk-sda}
+    - {type: disk, ptable: gpt, path: /dev/sdb, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdb}
+    - {type: disk, ptable: gpt, path: /dev/sdc, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdc}
+    - {type: disk, ptable: gpt, path: /dev/sdd, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sdd}
+    - {type: disk, ptable: gpt, path: /dev/sde, wipe: superblock, preserve: false, name: '', grub_device: false, id: disk-sde}
+    
+    - {type: partition, device: disk-sda, number: 1, size:     1048576,                     flag: bios_grub,    preserve: false, id: part-sda-1}
+    - {type: partition, device: disk-sda, number: 2, size:  1073741824, wipe: superblock,   flag: '',           preserve: false, id: part-sda-2}
+    - {type: partition, device: disk-sda, number: 3, size: 31135367168, wipe: superblock,   flag: '',           preserve: false, id: part-sda-3}
+    
+    - {type: partition, device: disk-sdb, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdb-1}
+    - {type: partition, device: disk-sdc, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdc-1}
+    - {type: partition, device: disk-sdd, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sdd-1}
+    - {type: partition, device: disk-sde, number: 1, size:          -1, wipe: superblock,   flag: '',           preserve: false, id: part-sde-1}
+
+    - {type: lvm_volgroup, name: vg_swap,   devices: [part-sdb-1], preserve: false, id: vg_swap}
+    - {type: lvm_volgroup, name: vg_var,    devices: [part-sdc-1], preserve: false, id: vg_var}
+    - {type: lvm_volgroup, name: vg_tmp,    devices: [part-sdd-1], preserve: false, id: vg_tmp}
+    - {type: lvm_volgroup, name: vg_home,   devices: [part-sde-1], preserve: false, id: vg_home}
+
+    - {type: lvm_partition, volgroup: vg_swap,  name: lv_swap,  size:   100%, preserve: false, id: lv_swap}
+    - {type: lvm_partition, volgroup: vg_var,   name: lv_var,   size:   100%, preserve: false, id: lv_var}
+    - {type: lvm_partition, volgroup: vg_tmp,   name: lv_tmp,   size:   100%, preserve: false, id: lv_tmp}
+    - {type: lvm_partition, volgroup: vg_home,  name: lv_home,  size:   100%, preserve: false, id: lv_home}
+    
+    - {type: format, volume: part-sda-2,    fstype: ext4, preserve: false, id: format-boot}
+    - {type: format, volume: part-sda-3,    fstype: ext4, preserve: false, id: format-root}
+
+    - {type: format, volume: lv_tmp,    fstype: ext4, preserve: false, id: format-tmp}
+    - {type: format, volume: lv_home,   fstype: ext4, preserve: false, id: format-home}
+    - {type: format, volume: lv_var,    fstype: ext4, preserve: false, id: format-var}
+    - {type: format, volume: lv_swap,   fstype: swap, preserve: false, id: format-swap}
+    
+    - {type: mount, device: format-root, path: /,       id: mount-root}
+    - {type: mount, device: format-tmp,  path: /tmp,    id: mount-tmp}
+    - {type: mount, device: format-home, path: /home,   id: mount-home}
+    - {type: mount, device: format-var,  path: /var,    id: mount-var}
+    - {type: mount, device: format-boot, path: /boot,   id: mount-boot}
+    - {type: mount, device: format-swap, path: '',      id: mount-swap}
+#    swap: {swap: 0}
+  late-commands:
+    - 'sed -i "s/^#*\(send dhcp-client-identifier\).*$/\1 = hardware;/" /target/etc/dhcp/dhclient.conf'
+    - 'sed -i "s/dhcp4: true/&\n      dhcp-identifier: mac/" /target/etc/netplan/00-installer-config.yaml'
+    - 'swapoff /target/swap.img || true'
+    - 'sed -i "/swap\.img/d" /target/etc/fstab'
+    - 'rm /target/swap.img'
